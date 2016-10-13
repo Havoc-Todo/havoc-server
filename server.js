@@ -1,6 +1,8 @@
 const Hapi = require('hapi')
-const Task = require('./models/task')
 const mongoose = require('mongoose')
+
+const Task = require('./models/task')
+const User = require('./models/user')
 
 mongoose.connect('mongodb://localhost/test')
 
@@ -9,7 +11,7 @@ server.connection({ port: 3000 })
 
 server.route({
   method: 'GET',
-  path: '/api/task/read/{user}{task?}',
+  path: '/api/task/read/{user}/{task?}',
   handler(request, reply) {
     const params = request.params
     Task.find(params).exec()
@@ -40,6 +42,16 @@ server.route({
     Task.remove({ t_id: taskId }).exec()
       .then((result) => console.log(result))
       .catch((err) => console.log(err))
+    reply('ok')
+  }
+})
+
+server.route({
+  method: 'POST',
+  path: '/api/user/create',
+  handler(request, reply) {
+    const user = new User(request.body)
+    user.save()
     reply('ok')
   }
 })
