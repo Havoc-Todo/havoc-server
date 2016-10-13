@@ -1,21 +1,46 @@
 const Hapi = require('hapi')
+const Task = require('./models/task')
+const mongoose = require('mongoose')
+
+mongoose.connect('mongodb://localhost/test')
 
 const server = new Hapi.Server()
 server.connection({ port: 3000 })
 
 server.route({
   method: 'GET',
-  path: '/',
+  path: '/api/task/read/{user}{task?}',
   handler(request, reply) {
-    reply('Hello, world!')
+    const params = request.params
+    Task.find(params).exec()
+      .then((docs) => reply(docs))
+      .catch((err) => reply(err))
   }
 })
 
 server.route({
-  method: 'GET',
-  path: '/{name}',
+  method: 'POST',
+  path: '/api/task/create',
   handler(request, reply) {
-    reply(`Hello, ${encodeURIComponent(request.params.name)}!`)
+    console.log(request.body)
+
+    const task = new Task(request.body.task)
+
+    task.save()
+      .then((doc) => reply({ status: true, task: doc }))
+      .catch((err) => reply({ status: false, err }))
+  }
+})
+
+server.route({
+  method: 'POST',
+  path: '/api/task/delete/{task}',
+  handler(request, reply) {
+    const taskId = request.params.task
+    Task.remove({ t_id: taskId }).exec()
+      .then((result) => console.log(result))
+      .catch((err) => console.log(err))
+    reply('ok')
   }
 })
 
