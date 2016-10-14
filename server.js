@@ -16,3 +16,11 @@ server.start((err) => {
   }
   console.log(`Server running at: ${server.info.uri}`)
 })
+
+server.on('response', (request) => {
+  const addr = request.info.remoteAddress
+  const method = request.method.toUpperCase()
+  const path = request.url.path
+  const code = request.response.statusCode
+  console.log(`${addr}: ${method} ${path} --> ${code}`)
+})
