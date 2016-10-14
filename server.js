@@ -50,10 +50,11 @@ server.route({
   method: 'GET',
   path: '/api/user',
   handler(request, reply) {
-    console.log('yo')
     User.find({}).exec()
-      .then((docs) => reply(docs))
-      .catch((err) => reply(err))
+      .then((docs) => {
+        if (docs) reply(docs)
+        else reply({ status: 'ERROR' })
+      })
   }
 })
 
@@ -63,8 +64,10 @@ server.route({
   handler(request, reply) {
     const user = new User(request.payload)
     user.save()
-      .then((doc) => console.log(doc))
-    reply(request.payload)
+      .then((doc) => {
+        if (doc) reply(doc)
+        else reply({ status: 'ERROR' })
+      })
   }
 })
 
