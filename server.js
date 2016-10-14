@@ -26,10 +26,7 @@ server.route({
   method: 'POST',
   path: '/api/task/create',
   handler(request, reply) {
-    console.log(request.body)
-
-    const task = new Task(request.body)
-
+    const task = new Task(request.payload)
     task.save()
       .then((doc) => reply({ status: true, doc }))
   }

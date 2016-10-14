@@ -65,17 +65,10 @@ function createTasks() {
 
 const newTasks = createTasks()
 
-for(let i = 0; i < newUsers.length; i++) {
-    request.post('ec2-54-158-62-69.compute-1.amazonaws.com:3000/api/user/create')
-        .send(newUsers[i])
-        .set('Accept', 'application/json')
-        .then((res) => console.log(res))
-        
-}
-
 for (let i = 0; i < newTasks.length; i++) {
-    request.post('ec2-54-158-62-69.compute-1.amazonaws.com:3000/api/task/create')
+    request.post('http://localhost:3000/api/task/create')
         .send(newTasks[i])
         .set('Accept', 'application/json')
-        .then((res) => console.log(res))
+        .then((res) => console.log(res.body))
+        .catch((err) => console.log(err))
 }
