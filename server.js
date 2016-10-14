@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const Task = require('./models/task')
 const User = require('./models/user')
 
-mongoose.connect('mongodb://localhost/test')
+mongoose.connect('mongodb://master:havoc@ds057476.mlab.com:57476/havoc')
 
 const server = new Hapi.Server()
 server.connection({ port: 3000 })
@@ -47,12 +47,24 @@ server.route({
 })
 
 server.route({
+  method: 'GET',
+  path: '/api/user',
+  handler(request, reply) {
+    console.log('yo')
+    User.find({}).exec()
+      .then((docs) => reply(docs))
+      .catch((err) => reply(err))
+  }
+})
+
+server.route({
   method: 'POST',
   path: '/api/user/create',
   handler(request, reply) {
-    const user = new User(request.body)
+    const user = new User(request.payload)
     user.save()
-    reply('ok')
+      .then((doc) => console.log(doc))
+    reply(request.payload)
   }
 })
 
