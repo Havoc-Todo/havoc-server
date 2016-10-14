@@ -16,7 +16,6 @@ server.route({
     const params = request.params
     Task.find(params).exec()
       .then((docs) => reply(docs))
-      .catch((err) => reply(err))
   }
 })
 
@@ -30,7 +29,6 @@ server.route({
 
     task.save()
       .then((doc) => reply({ status: true, task: doc }))
-      .catch((err) => reply({ status: false, err }))
   }
 })
 
@@ -41,7 +39,6 @@ server.route({
     const taskId = request.params.task
     Task.remove({ t_id: taskId }).exec()
       .then((result) => console.log(result))
-      .catch((err) => console.log(err))
     reply('ok')
   }
 })
