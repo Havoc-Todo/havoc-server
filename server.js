@@ -28,7 +28,7 @@ server.route({
   handler(request, reply) {
     console.log(request.body)
 
-    const task = new Task(request.body.task)
+    const task = new Task(request.body)
 
     task.save()
       .then((doc) => reply({ status: true, doc }))
