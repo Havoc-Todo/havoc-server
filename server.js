@@ -15,7 +15,10 @@ server.route({
   handler(request, reply) {
     const params = request.params
     Task.find(params).exec()
-      .then((docs) => reply(docs))
+      .then((doc) => {
+        if (doc) reply({ status: true, doc })
+        else reply({ status: false })
+      })
   }
 })
 
@@ -28,7 +31,7 @@ server.route({
     const task = new Task(request.body.task)
 
     task.save()
-      .then((doc) => reply({ status: true, task: doc }))
+      .then((doc) => reply({ status: true, doc }))
   }
 })
 
@@ -38,8 +41,10 @@ server.route({
   handler(request, reply) {
     const taskId = request.params.task
     Task.remove({ t_id: taskId }).exec()
-      .then((result) => console.log(result))
-    reply('ok')
+      .then((result) => {
+        if (result) reply({ status: true })
+        else reply({ status: false })
+      })
   }
 })
 
@@ -48,9 +53,9 @@ server.route({
   path: '/api/user',
   handler(request, reply) {
     User.find({}).exec()
-      .then((docs) => {
-        if (docs) reply(docs)
-        else reply({ status: 'ERROR' })
+      .then((doc) => {
+        if (doc) reply({ status: true, doc })
+        else reply({ status: false })
       })
   }
 })
@@ -62,8 +67,8 @@ server.route({
     const user = new User(request.payload)
     user.save()
       .then((doc) => {
-        if (doc) reply(doc)
-        else reply({ status: 'ERROR' })
+        if (doc) reply({ status: true, doc })
+        else reply({ status: false })
       })
   }
 })
