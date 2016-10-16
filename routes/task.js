@@ -1,4 +1,8 @@
 const Task = require('../models/task')
+const _ = require('lodash')
+const Chance = require('chance')
+
+const chance = new Chance()
 
 module.exports = [
   {
@@ -17,7 +21,8 @@ module.exports = [
     method: 'POST',
     path: '/api/task/create',
     handler(request, reply) {
-      const task = new Task(request.payload)
+      const temp = _.merge(request.payload, { t_id: chance.guid() })
+      const task = new Task(temp)
       task.save()
         .then((doc) => reply({ status: true, doc }))
     }
