@@ -20,7 +20,9 @@
   "dependencies": {
     "hapi": "^15.1.1",
     "isomorphic-fetch": "^2.2.1",
-    "lodash": "^4.16.4"
+    "lodash": "^4.16.4",
+    "mongoose": "^4.6.4",
+    "nodemon": "^1.11.0"
   },
   "devDependencies": {
     "chance": "^1.0.4"
