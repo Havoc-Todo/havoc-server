@@ -27,7 +27,10 @@ module.exports = [
       const task = new Task(temp)
       task.save()
         .then((doc) => reply({ status: true, doc }))
-        .catch((err) => reply({ status: false, err }).code(400))
+        .catch((err) => {
+          console.log(err)
+          reply({ status: false, err }).code(400)
+        })
     }
   },
   {
