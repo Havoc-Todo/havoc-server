@@ -53,10 +53,9 @@ module.exports = [
     method: 'POST',
     path: '/api/task/update/',
     handler(request, reply) {
-      Task.findByIdandUpdate(
+      Task.update(
         { t_id: request.payload.t_id },
         { $set: request.payload },
-        { new: true },
         (err, task) => {
           if (err) reply({ status: false, err })
           else if (task) reply({ status: true, task })
