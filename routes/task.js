@@ -24,7 +24,7 @@ module.exports = [
       const temp = _.merge(request.payload, { t_id: chance.guid() })
       const task = new Task(temp)
       task.save()
-        .catch((err) => reply({ status: true, err }))
+        .catch((err) => reply({ status: false, err }))
         .then((doc) => reply({ status: true, doc }))
     }
   },
