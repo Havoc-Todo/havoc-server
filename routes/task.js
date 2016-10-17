@@ -19,7 +19,7 @@ module.exports = [
   },
   {
     method: 'POST',
-    path: '/api/task/create',
+    path: '/api/task/create/',
     handler(request, reply) {
       const temp = _.merge(request.payload, { t_id: chance.guid() })
       const task = new Task(temp)
