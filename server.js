@@ -6,7 +6,7 @@ const api = require('./routes/api')
 mongoose.connect('mongodb://master:havoc@ds057476.mlab.com:57476/havoc')
 
 const server = new Hapi.Server()
-server.connection({ port: 3000 })
+server.connection({ port: 3000, routes: { cors: true } })
 
 server.route(api)
 
