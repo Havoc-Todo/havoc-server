@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const api = require('./routes/api')
 
-mongoose.Promise = Promise
+mongoose.Promise = global.Promise
 mongoose.connect('mongodb://master:havoc@ds057476.mlab.com:57476/havoc')
 
 const server = new Hapi.Server()

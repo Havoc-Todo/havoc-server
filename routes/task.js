@@ -21,11 +21,13 @@ module.exports = [
     method: 'POST',
     path: '/api/task/create/',
     handler(request, reply) {
+      console.log(request.payload)
       const temp = _.merge(request.payload, { t_id: chance.guid() })
+      console.log(temp)
       const task = new Task(temp)
       task.save()
-        .catch((err) => reply({ status: false, err }))
         .then((doc) => reply({ status: true, doc }))
+        .catch((err) => reply({ status: false, err }))
     }
   },
   {
