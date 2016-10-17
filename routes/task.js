@@ -1,6 +1,7 @@
 const Task = require('../models/task')
 const _ = require('lodash')
 const Chance = require('chance')
+const priorityLevels = require('../enums/priorityLevels')
 
 const chance = new Chance()
 
@@ -22,7 +23,9 @@ module.exports = [
     path: '/api/task/create/',
     handler(request, reply) {
       console.log(request.payload)
+      const priority = priorityLevels[`${request.payload.priority}`]
       const temp = _.merge(request.payload, { t_id: chance.guid() })
+      temp.priority = priority
       console.log(temp)
       const task = new Task(temp)
       task.save()
