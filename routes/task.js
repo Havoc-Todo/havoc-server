@@ -22,11 +22,12 @@ module.exports = [
     method: 'POST',
     path: '/api/task/create/',
     handler(request, reply) {
-      console.log(request.payload)
-      const priority = priorityLevels[`${request.payload.priority}`]
+      let priority = request.payload.priority
+      if (typeof priority !== Number) {
+        priority = priorityLevels[`${request.payload.priority}`]
+      }
       const temp = _.merge(request.payload, { t_id: chance.guid() })
       temp.priority = priority
-      console.log(temp)
       const task = new Task(temp)
       task.save()
         .then((doc) => reply({ status: true, doc }))
@@ -50,11 +51,10 @@ module.exports = [
   },
   {
     method: 'POST',
-    path: '/api/task/update/{task}',
+    path: '/api/task/update/',
     handler(request, reply) {
-      const taskId = request.params.task
       Task.findByIdandUpdate(
-        { t_id: taskId },
+        { t_id: request.payload.t_id },
         { $set: request.payload },
         { new: true },
         (err, task) => {
