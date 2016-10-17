@@ -24,6 +24,7 @@ module.exports = [
       const temp = _.merge(request.payload, { t_id: chance.guid() })
       const task = new Task(temp)
       task.save()
+        .catch((err) => reply({ status: true, err }))
         .then((doc) => reply({ status: true, doc }))
     }
   },
@@ -37,6 +38,22 @@ module.exports = [
           if (result) reply({ status: true })
           else reply({ status: false })
         })
+    }
+  },
+  {
+    method: 'POST',
+    path: '/api/task/update/{task}',
+    handler(request, reply) {
+      const taskId = request.params.task
+      Task.findByIdandUpdate(
+        { t_id: taskId },
+        { $set: request.payload },
+        { new: true },
+        (err, task) => {
+          if (err) reply({ status: false, err })
+          else if (task) reply({ status: true, task })
+        }
+      )
     }
   }
 ]
