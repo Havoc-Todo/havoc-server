@@ -23,7 +23,7 @@ module.exports = [
     path: '/api/task/create/',
     handler(request, reply) {
       let priority = request.payload.priority
-      if (typeof priority !== Number) {
+      if (typeof priority !== "number") {
         priority = priorityLevels[`${request.payload.priority}`]
       }
       const temp = _.merge(request.payload, { t_id: chance.guid() })
