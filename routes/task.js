@@ -22,12 +22,7 @@ module.exports = [
     method: 'POST',
     path: '/api/task/create/',
     handler(request, reply) {
-      let priority = request.payload.priority
-      if (typeof priority !== "number") {
-        priority = priorityLevels[`${request.payload.priority}`]
-      }
       const temp = _.merge(request.payload, { t_id: chance.guid() })
-      temp.priority = priority
       const task = new Task(temp)
       task.save()
         .then((doc) => reply({ status: true, doc }))
