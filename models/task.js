@@ -7,7 +7,7 @@ const taskSchema = new mongoose.Schema({
   subtasks: Array,
   category: String,
   indexInList: Number,
-  priority: Number,
+  priority: String,
   dateDue: Number,
   user: String,
   attribute: Object,
