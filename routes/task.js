@@ -1,7 +1,7 @@
 const Task = require('../models/task')
 const _ = require('lodash')
 const Chance = require('chance')
-const priorityLevels = require('../enums/priorityLevels')
+const Map = require('immutable').Map
 
 const chance = new Chance()
 
@@ -10,7 +10,8 @@ module.exports = [
     method: 'GET',
     path: '/api/task/read/{user}/{task?}',
     handler(request, reply) {
-      const params = request.params
+      const req = new Map(request)
+      const params = req.get('params')
       Task.find(params).exec()
         .then((doc) => {
           if (doc) reply({ status: true, doc })
@@ -23,6 +24,7 @@ module.exports = [
     path: '/api/task/create/',
     handler(request, reply) {
       const temp = _.merge(request.payload, { t_id: chance.guid() })
+      console.log(temp)
       const task = new Task(temp)
       task.save()
         .then((doc) => reply({ status: true, doc }))
