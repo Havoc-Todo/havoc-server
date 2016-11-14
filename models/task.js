@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const mongoose = require('mongoose')
 
 const taskSchema = new mongoose.Schema({
@@ -9,10 +10,15 @@ const taskSchema = new mongoose.Schema({
   indexInList: Number,
   priority: String,
   dateDue: Number,
+  allDay: Boolean,
   user: String,
   attribute: Object,
   status: String
 })
+
+const required = ['t_id', 'name', 'dateDue', 'user']
+
+_.forEach(required, (val) => { val.required = true }) // eslint-disable-line no-param-reassign
 
 // subtasks : [{ name: string, isCompleted: bool }]
 

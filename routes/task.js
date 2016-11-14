@@ -23,9 +23,7 @@ module.exports = [
     method: 'POST',
     path: '/api/task/create/',
     handler(request, reply) {
-      console.log(request.payload)
       const temp = _.merge(request.payload, { t_id: chance.guid() })
-      console.log(temp)
       const task = new Task(temp)
       task.save()
         .then((doc) => reply({ status: true, doc }))
@@ -39,12 +37,16 @@ module.exports = [
     method: 'POST',
     path: '/api/task/delete/{task}',
     handler(request, reply) {
-      const taskId = request.params.task
-      Task.remove({ t_id: taskId }).exec()
-        .then((result) => {
-          if (result) reply({ status: true })
-          else reply({ status: false })
-        })
+      if (_.has(request.params, 'task')) {
+        const taskId = request.params.task
+        Task.remove({ t_id: taskId }).exec()
+          .then((result) => {
+            if (result) reply({ status: true })
+            else reply({ status: false })
+          })
+      } else {
+        reply({ status: false, err: 'A task parameter was not provided'})
+      }
     }
   },
   {
